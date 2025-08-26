@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ligalifunmilayo@cloudshell:~$ rmdir Funmilayo/
 rmdir: failed to remove 'Funmilayo/': Directory not empty
 ligalifunmilayo@cloudshell:~$ rmdir -f Funmilayo/
