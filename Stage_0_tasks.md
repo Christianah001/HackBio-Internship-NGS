@@ -1,3 +1,18 @@
+###Project Details: Submit markdown or code solution to the project below
+
+##Stage 0
+Project 1: BASh Basic
+You are to achieve this short story with the command line alone.
+
+Your submission should be a simple script with listing the solution to each task below
+
+Important: Upload your script to GitHub
+
+Linkedin: As a team, make a video record of your solution and upload to LinkedIn or X.
+
+Absence of these two in your script will make them rejected outrightly.
+
+
 ###Project 1: BASh Basic
 
 #1. Print your name
