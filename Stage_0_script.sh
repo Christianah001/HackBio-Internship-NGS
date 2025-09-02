@@ -9,7 +9,7 @@ mkdir Funmilayo
 
 
 #3. Create another new directory titled biocomputing and change to that directory with one line of command
- mkdir biocomputing; cd biocomputing
+ mkdir biocomputing && cd biocomputing
 
 #4.Download these 3 files:
 https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
@@ -17,8 +17,8 @@ https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
 https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
 
 wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
-wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk -O wildtype.gbk
-wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk -O wildtype.gbk.1
+wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk 
+wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk 
 
 
 
