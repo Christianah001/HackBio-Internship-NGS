@@ -70,3 +70,37 @@ awk '/SOURCE/ {print $2, $3}' *.gbk
 #12. List all the gene names of the .gbk file. Hint {grep '/gene='}
 grep '/gene=' *.gbk
                     
+
+
+# Project 2: Installing Bioinformatics Software on the Terminal
+#1. Activate your base conda environment
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+cd ~/miniconda3
+ export PATH="$HOME/miniconda3/bin:$PATH"
+ source ~/.bashrc
+ conda activate base
+
+#2. Create a conda environment named funtools
+conda create --name funtools -y
+
+#3. Activate the funtools environment
+conda activate funtools
+
+#4. Install Figlet using conda or apt-get
+sudo apt-get install figlet -y
+
+#5. Run figlet <your name>
+figlet "Funmilayo"
+
+#6-13. Install tools from bioconda
+conda install -c bioconda \
+    bwa \
+    blast \
+    samtools \
+    bedtools \
+    spades \
+    bcftools \
+    fastp \
+    multiqc -y
+
