@@ -25,6 +25,34 @@ The analysis follows a comprehensive microbial WGS pipeline, structured into fou
 # 3. Functional Scripts
 The following scripts automate the WGS pipeline used for this analysis.
 ## 3.1. Phase 1: Sample Preparation Scripts
+Bash Script 1: `download.sh`
+```bash
+#!/usr/bin/env bash
+# Script: 01_download.sh
+# Purpose: Download raw FASTQ files based on the example link-based script
+# Why: We want reproducible download from FTP/ENA and consistent file naming
+
+set -euo pipefail
+
+RAW_DIR="raw"
+mkdir -p $RAW_DIR
+
+echo "========================================"
+echo " Step: Downloading raw FASTQ files"
+echo " Output -> $RAW_DIR"
+echo "========================================"
+
+# List of download commands (you can also keep these in a text file)
+curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR270/016/SRR27013316/SRR27013316_1.fastq.gz \
+    -o $RAW_DIR/SRR27013316_Genome_Sequencing_of_Listeria_monocytogenes_SA_outbreak_2017_1.fastq.gz
+curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR270/016/SRR27013316/SRR27013316_2.fastq.gz \
+    -o $RAW_DIR/SRR27013316_Genome_Sequencing_of_Listeria_monocytogenes_SA_outbreak_2017_2.fastq.gz
+# ... (repeat for all desired SRR IDs as in the URL script) ...
+
+echo ">>> Download finished. Sample of raw files:"
+ls -lh $RAW_DIR | head -n 20
+```
+
 ### Identify sample name pattern and list sample prefixes
 Bash Script 1: `link_samples.sh` 
 ```bash
@@ -38,6 +66,9 @@ for f in *_1*.fastq.gz; do echo "${f%%_1*}"; done | sort -u > all_samples.txt
 # Count how many unique prefixes found
 wc -l all_samples.txt
 ```
+
+
+
 ### Randomly choose 50 samples
 Bash Script 2: `Selected.samples.sh` (Random Selection)
 
@@ -52,15 +83,89 @@ shuf -n $N all_samples.txt > selected_samples.txt
 cat selected_samples.txt | sed -n '1,20p'
 ```
 
+## 3.2. Phase 2: QC & Trimming Scripts
+Bash Script 3: `qc.sh` (Initial Raw QC)
+```bash
+#!/bin/bash
+# Script: 03_qc.sh
+# Purpose: Run FastQC on selected reads and summarize with MultiQC
+
+SELECTED_DIR="selected"
+QC_DIR="qc/raw_fastqc"
+MULTIQC_DIR="qc/multiqc_raw"
+
+mkdir -p $QC_DIR $MULTIQC_DIR
+
+THREADS=8
+
+echo "========================================"
+echo " Step 1: Running FastQC on selected reads"
+echo " Input directory: $SELECTED_DIR"
+echo " Output directory: $QC_DIR"
+echo " Threads: $THREADS"
+echo "========================================"
+
+fastqc -t $THREADS $SELECTED_DIR/*.fastq.gz -o $QC_DIR
+
+echo ">>> FastQC completed."
+echo ">>> Output files:"
+ls -lh $QC_DIR | grep '.zip\|.html'
+
+echo ""
+echo "========================================"
+echo " Step 2: Running MultiQC summary"
+echo " Input: $QC_DIR"
+echo " Output: $MULTIQC_DIR"
+echo "========================================"
+
+multiqc $QC_DIR -o $MULTIQC_DIR
+
+echo ">>> MultiQC completed."
+echo ">>> Report generated at: $MULTIQC_DIR/multiqc_report.html"
+echo "========================================"
+
+```
+
+Bash Script 4: `fastp.sh` (Read Trimming and Filtering)
+```bash
+#!/bin/bash
+# Script: 04_fastp.sh
+# Purpose: Perform adapter trimming & quality filtering on selected reads
+
+SELECTED_DIR="selected"
+TRIMMED_DIR="trimmed"
+FASTP_REPORTS="qc/fastp_reports"
+
+mkdir -p $TRIMMED_DIR $FASTP_REPORTS
+
+# Loop over samples
+THREADS_PER_SAMPLE=4
+
+while read sample; do
+  echo ">>> Trimming $sample"
+  fastp \
+    -i $SELECTED_DIR/${sample}_1.fastq.gz \
+    -I $SELECTED_DIR/${sample}_2.fastq.gz \
+    -o $TRIMMED_DIR/${sample}_1.trim.fastq.gz \
+    -O $TRIMMED_DIR/${sample}_2.trim.fastq.gz \
+    -w $THREADS_PER_SAMPLE \
+    --detect_adapter_for_pe \
+    --cut_front --cut_tail \
+    --cut_window_size 4 --cut_mean_quality 20 \
+    --length_required 50 \
+    --html $FASTP_REPORTS/${sample}_fastp.html \
+    --json $FASTP_REPORTS/${sample}_fastp.json
+done < selected_samples.txt
+```
+
 ### Post-Trimming QC
 Bash Script 5: `trim_qc.sh`
-
 ```bash
 #!/usr/bin/bash
 #4. trim_qc.sh
 # Description: Quality control on trimmed data
 
-TRIMMED_DATA_DIR="/home/maa/Funmilayo/WGS_microbes/selected/trimmed"
+TRIMMED_DATA_DIR="./selected/trimmed"
 QC_DIR="$TRIMMED_DATA_DIR/trimmed_qc"
 
 # Create QC output directory
@@ -84,7 +189,6 @@ echo "QC reports saved to: $QC_DIR"
 
 ## 3.3. Phase 3: Assembly & QC Scripts
 Bash Script 6: `assembly.sh` (SPAdes Assembly)
-
 ```bash
 #!/bin/env bash
 #6. assembly.sh
