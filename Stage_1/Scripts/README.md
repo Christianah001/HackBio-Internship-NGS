@@ -46,7 +46,7 @@ Bash Script 2: `Selected.samples.sh` (Random Selection)
 # Set how many samples you want
 N=50
 # Randomly pick N sample prefixes
-shuf -n $N all_samples.txt > selected_samples.txt
+`shuf` -n $N all_samples.txt > selected_samples.txt
 # Inspect selected
 cat selected_samples.txt | sed -n '1,20p'
 ```
