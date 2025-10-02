@@ -191,7 +191,7 @@ echo "Key file: $QUAST_DIR/report.html (open in browser)"
 ```
 ## 3.4. Phase 4: Gene Analysis Scripts
 Bash Script 8: `blast_confirm.sh` (Organism Identification)
-```
+```bash
 #!/bin/bash
 # Script: blast_confirm.sh
 # Description: Run BLAST on a single representative sample for organism identif>
