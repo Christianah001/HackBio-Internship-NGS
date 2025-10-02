@@ -400,6 +400,31 @@ plt.tight_layout()
 plt.savefig('gene_distribution_heatmap.png')
 ```
 # 4. Results
+
+## Results
+
+### Antimicrobial Resistance (AMR) Profiles
+
+Analysis of the outbreak isolates revealed multiple high-prevalence antimicrobial resistance (AMR) genes.  
+The prevalence and functional implications of these determinants are summarized below:
+
+| Resistance Gene | Resistance Class   | No. of Isolates (n=50) | Prevalence | Resistance Implication |
+|-----------------|--------------------|-------------------------|-------------|-------------------------|
+| **FosX**        | Fosfomycin         | 50                      | 100%        | Enzyme that inactivates fosfomycin via Mn(II)-dependent hydrolysis, rendering the antibiotic ineffective. |
+| **lin**         | Lincosamides       | 50                      | 100%        | Encodes ABC-F ribosomal protection protein, conferring resistance to lincomycin and related lincosamides. |
+| **norB**        | Fluoroquinolones   | 50                      | 100%        | Multidrug efflux pump, expelling fluoroquinolones and other structurally unrelated antibiotics such as tetracyclines. |
+| **mprF**        | Peptide resistance | 49                      | 98%         | Membrane protein that modifies phosphatidylglycerol to repel cationic antimicrobial peptides; absent in *SRR27013258*. |
+
+---
+
+### Interpretation
+
+- **Universal resistance markers** (FosX, lin, norB) indicate that **fosfomycin, lincosamides, and fluoroquinolones** are likely ineffective across all isolates.  
+- **mprF**, present in 49/50 isolates, enhances resistance against host immune peptides, strengthening bacterial survival in the host environment.  
+- The coexistence of these genes highlights a **multidrug resistant (MDR) outbreak strain**, limiting therapeutic options.  
+
+
+
 ## Organism Confirmation and Toxin Gene Identification
 The organism for all 50 isolates is confirmed to be Listeria monocytogenes.
 
@@ -418,3 +443,10 @@ The distribution of toxins across each samples
 fhjkjlkj.
 
 ![Prevalence of Toxins Genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins_across_50_samples.png)
+
+
+
+
+
+
+**Clinical Implication:** This outbreak strain poses significant challenges for treatment, requiring alternative antimicrobials (e.g., vancomycin, linezolid) and emphasizing the importance of genomic surveillance for outbreak management.  
