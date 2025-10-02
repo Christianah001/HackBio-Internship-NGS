@@ -15,6 +15,7 @@ d. Suggest Evidence-Based Treatment Options
 The analysis follows a comprehensive microbial WGS pipeline, structured into four main phases using a suite of bioinformatics tools and custom Bash/Python scripts.
 
 | Phase | Steps | Tools Used | Purpose |
+| --- | --- | --- | --- |
 | I. Sample Preparation | Selection, Organization | shuf, ln -s (Bash) | Randomly selects the 50 isolates and uses symbolic links to organize the raw sequencing data (FASTQ files) for processing. |
 | II. QC & Trimming | Quality Assessment, Filtering | FastQC, MultiQC, fastp | Assesses read quality, removes sequencing adaptors, and trims low-quality bases to ensure clean input for assembly.|
 | III. Assembly & QC | Genome Construction, Assessment | SPAdes, QUAST | Assembles cleaned reads into draft contiguous genome sequences (contigs.fasta). QUAST evaluates assembly quality metrics (N50, contig count). |
