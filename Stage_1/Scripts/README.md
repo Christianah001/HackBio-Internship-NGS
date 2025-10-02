@@ -51,5 +51,46 @@ shuf -n $N all_samples.txt > selected_samples.txt
 cat selected_samples.txt | sed -n '1,20p'
 ```
 
+### Post-Trimming QC
+Bash Script 5: `trim_qc.sh`
 
+```bash
+#!/usr/bin/bash
+#5. trim_qc.sh
+# Description: Quality control on trimmed data
+
+TRIMMED_DATA_DIR="/home/maa/Funmilayo/WGS_microbes/selected/trimmed"
+QC_DIR="$TRIMMED_DATA_DIR/trimmed_qc"
+
+# Create QC output directory
+mkdir -p "$QC_DIR"
+
+# Check if there are trimmed FASTQ files
+# ...
+
+echo "=== Running FastQC on trimmed data ==="
+fastqc -o "$QC_DIR" "$TRIMMED_DATA_DIR"/*_*.trim.fastq.gz
+
+echo "=== Running MultiQC on trimmed QC reports ==="
+multiqc "$QC_DIR" -o "$QC_DIR"
+```
+
+## 3.3. Phase 3: Assembly & QC Scripts
+Bash Script 6: `assembly.sh` (SPAdes Assembly)
+
+```bash
+#!/bin/env bash
+#6. assembly.sh
+# Description: Assemble trimmed paired-end reads into genomes using SPAdes v3.13.1
+
+TRIMMED_DATA_DIR="./selected/trimmed"
+ASSEMBLY_DIR="./selected/assembly"
+
+mkdir -p "$ASSEMBLY_DIR"
+
+# ... check for trimmed data ...
+
+echo "=== GENOME ASSEMBLY WITH SPADES ==="
+# ... SPAdes execution loop ...
+```
 
