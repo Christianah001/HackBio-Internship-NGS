@@ -39,7 +39,8 @@ wc -l all_samples.txt
 ### Randomly choose 50 samples
 Bash Script 2: `Selected.samples.sh` (Random Selection)
 
-```#!/bin/bash
+```bash
+#!/bin/bash
 # 2. Selected.samples.sh
 # Set how many samples you want
 N=50
