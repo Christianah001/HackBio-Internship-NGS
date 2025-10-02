@@ -400,7 +400,7 @@ plt.tight_layout()
 plt.savefig('gene_distribution_heatmap.png')
 ```
 # 4. Results
-## 3.1. Organism Confirmation and Toxin Gene Identification (3/3 Points)
+## 3.1. Organism Confirmation and Toxin Gene Identification
 The organism for all 50 isolates is confirmed to be Listeria monocytogenes.
 
 Analysis of virulence genes (Abricate/VFDB) shows that all core genes of the PrfA regulon (essential for pathogenicity) were found in 100% of the isolates. This highly uniform, pathogenic profile is typical for a severe, clonal outbreak strain.
