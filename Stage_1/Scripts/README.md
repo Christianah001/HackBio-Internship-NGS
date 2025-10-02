@@ -37,16 +37,7 @@ for f in *_1*.fastq.gz; do echo "${f%%_1*}"; done | sort -u > all_samples.txt
 # Count how many unique prefixes found
 wc -l all_samples.txt
 ```
-
-
-
-#📂 Dataset
-
-Samples: 100 bacterial isolates (downsampled to 50 for demo runs).
-
-Download Script:
-
-
+Randomly choose 50 samples
 Bash Script 1: `Selected.samples.sh` (Random Selection)
 
 ```#!/bin/bash
@@ -56,7 +47,8 @@ N=50
 # Randomly pick N sample prefixes
 shuf -n $N all_samples.txt > selected_samples.txt
 # Inspect selected
-cat selected_samples.txt | sed -n '1,20p' ```
+cat selected_samples.txt | sed -n '1,20p'
+```
 
 
 
