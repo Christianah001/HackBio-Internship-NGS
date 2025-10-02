@@ -13,3 +13,5 @@ This report details the bioinformatics analysis of 50 Listeria monocytogenes iso
 4. Suggest Evidence-Based Treatment Options
 
 
+## 2. Methodology: WGS Pipeline Overview
+The analysis follows a comprehensive microbial WGS pipeline, structured into four main phases using a suite of bioinformatics tools and custom Bash/Python scripts.
