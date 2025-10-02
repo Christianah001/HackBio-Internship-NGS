@@ -16,15 +16,37 @@ The analysis follows a comprehensive microbial WGS pipeline, structured into fou
 
 | Phase | Steps | Tools Used | Purpose |
 | --- | --- | --- | --- |
-| I. Sample Preparation | Selection, Organization | shuf, ln -s (Bash) | Randomly selects the 50 isolates and uses symbolic links to organize the raw sequencing data (FASTQ files) for processing. |
+| I. Sample Preparation | Selection, Organization | `shuf`, `ln -s` (Bash) | Randomly selects the 50 isolates and uses symbolic links to organize the raw sequencing data (FASTQ files) for processing. |
 | II. QC & Trimming | Quality Assessment, Filtering | FastQC, MultiQC, fastp | Assesses read quality, removes sequencing adaptors, and trims low-quality bases to ensure clean input for assembly.|
 | III. Assembly & QC | Genome Construction, Assessment | SPAdes, QUAST | Assembles cleaned reads into draft contiguous genome sequences (contigs.fasta). QUAST evaluates assembly quality metrics (N50, contig count). |
 | IV. Gene Analysis | Organism ID, Resistance/Virulence Screening | BLASTn, ABRicate, Pandas | Confirms species identity. ABRicate screens assemblies against the CARD (AMR) and VFDB (Toxin) databases. Python calculates prevalence and generates visualizations. |
 
 # 3. Functional Scripts
 The following scripts automate the WGS pipeline used for this analysis.
-
 ## 3.1. Phase 1: Sample Preparation Scripts
+# Identify sample name pattern and list sample prefixes
+```# show example files (first 20)
+ls -1 | head -n 20
+
+# If your files are paired and named SAMPLE_R1.fastq.gz and SAMPLE_R2.fastq.gz:
+ls *_R1*.fastq.gz | head
+
+# Create list of prefixes (remove the trailing _R1.fastq.gz)
+for f in *_R1*.fastq.gz; do echo "${f%%_R1*}"; done | sort -u > all_samples.txt
+
+# Count how many unique prefixes found
+wc -l all_samples.txt```
+
+
+
+
+#📂 Dataset
+
+Samples: 100 bacterial isolates (downsampled to 50 for demo runs).
+
+Download Script:
+
+
 Bash Script 1: `Selected.samples.sh` (Random Selection)
 
 ```#!/bin/bash
