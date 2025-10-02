@@ -350,3 +350,52 @@ echo "Prevalence tables: "
 echo "  - $ABRICATE_DIR/summary/amr_gene_prevalence.csv"
 echo "  - $ABRICATE_DIR/summary/toxin_gene_prevalence.csv"
 ```
+Python Analysis Script (Prevalence and Visualization)
+```python
+import pandas as pd
+import re
+import matplotlib.pyplot as plt
+import seaborn as sns # Used specifically for the heatmap visualization
+
+# 1. Load the TSV file
+df = pd.read_csv('all_toxin_results.tsv', sep='\t')
+
+# 2. Extract Isolate ID
+# Same step as above to identify the unique isolates.
+df['Isolate_ID'] = df['#FILE'].str.extract(r'/assembly/(SRR\d+)_')
+
+# 3. Create Presence/Absence Matrix
+# Select only the relevant columns and remove duplicate (multiple hits for the same gene in one isolate).
+gene_hits = df[['Isolate_ID', 'GENE']].drop_duplicates()
+
+# Assign a value of 1 for every gene hit.
+gene_hits['Presence'] = 1
+
+# Pivot the data to create the matrix:
+# - index='Isolate_ID' (rows)
+# - columns='GENE' (columns)
+# - values='Presence' (cell values are 1)
+# - fill_value=0: Crucially, if a gene is missing in an isolate (NaN after pivot), it's filled with 0 (Absent).
+presence_absence_matrix = gene_hits.pivot_table(
+    index='Isolate_ID',
+    columns='GENE',
+    values='Presence',
+    fill_value=0
+)
+
+# 4. Plotting (Heatmap)
+plt.figure(figsize=(14, 10))
+# The 'binary' colormap is ideal: 1 (Presence) is dark, 0 (Absence) is white/light.
+sns.heatmap(presence_absence_matrix, cmap='binary', cbar_kws={'ticks': [0, 1]})
+
+plt.title('Gene Distribution (Presence/Absence) Across 50 Isolates')
+plt.xlabel('Gene')
+plt.ylabel('Isolate ID')
+
+plt.xticks(rotation=90, fontsize=8)
+plt.yticks(fontsize=8)
+plt.tight_layout()
+
+# Save the plot
+plt.savefig('gene_distribution_heatmap.png')
+```
