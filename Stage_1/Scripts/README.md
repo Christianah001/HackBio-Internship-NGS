@@ -408,4 +408,9 @@ Analysis of virulence genes (Abricate/VFDB) shows that all core genes of the Prf
 The distribution of toxins across each samples
 ![the distribution across each sample](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins.png)
 
+
+
+
+fhjkjlkj.
+
 ![Prevalence of Toxins Genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins_across_50_samples.png)
