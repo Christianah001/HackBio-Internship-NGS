@@ -1,8 +1,8 @@
-##Comparative Genomic Analysis of Listeria monocytogenes Isolates from the South African Polony Outbreak (2017–2018)
+## Comparative Genomic Analysis of Listeria monocytogenes Isolates from the South African Polony Outbreak (2017–2018)
 1. Introduction and Objectives
 This report details the bioinformatics analysis of 50 Listeria monocytogenes isolates, a subset of the strains responsible for the devastating 2017–2018 South African listeriosis outbreak. The project utilizes Whole-Genome Sequencing (WGS) data to genetically characterize the pathogen, which is crucial for informing public health response and clinical guidance.
 
-##The objectives are:
+## The objectives are:
 
 1. Confirm the Organism Identity
 
