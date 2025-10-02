@@ -28,9 +28,8 @@ The following scripts automate the WGS pipeline used for this analysis.
 Bash Script 1: `download.sh`
 ```bash
 #!/usr/bin/env bash
-# Script: 01_download.sh
-# Purpose: Download raw FASTQ files based on the example link-based script
-# Why: We want reproducible download from FTP/ENA and consistent file naming
+# Script: download.sh
+# Purpose: Download all raw FASTQ files from ENA/SRA using SRR IDs
 
 set -euo pipefail
 
@@ -42,12 +41,13 @@ echo " Step: Downloading raw FASTQ files"
 echo " Output -> $RAW_DIR"
 echo "========================================"
 
-# List of download commands (you can also keep these in a text file)
-curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR270/016/SRR27013316/SRR27013316_1.fastq.gz \
-    -o $RAW_DIR/SRR27013316_Genome_Sequencing_of_Listeria_monocytogenes_SA_outbreak_2017_1.fastq.gz
-curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR270/016/SRR27013316/SRR27013316_2.fastq.gz \
-    -o $RAW_DIR/SRR27013316_Genome_Sequencing_of_Listeria_monocytogenes_SA_outbreak_2017_2.fastq.gz
-# ... (repeat for all desired SRR IDs as in the URL script) ...
+while read SRR; do
+  echo ">>> Downloading $SRR ..."
+  curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${SRR:0:6}/${SRR: -3}/$SRR/${SRR}_1.fastq.gz \
+      -o $RAW_DIR/${SRR}_1.fastq.gz
+  curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${SRR:0:6}/${SRR: -3}/$SRR/${SRR}_2.fastq.gz \
+      -o $RAW_DIR/${SRR}_2.fastq.gz
+done < srr_ids.txt
 
 echo ">>> Download finished. Sample of raw files:"
 ls -lh $RAW_DIR | head -n 20
