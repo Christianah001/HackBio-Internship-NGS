@@ -26,8 +26,7 @@ The following scripts automate the WGS pipeline used for this analysis.
 ## 3.1. Phase 1: Sample Preparation Scripts
 ### Identify sample name pattern and list sample prefixes
 Bash Script 1: `link_samples.sh` 
-```
-#!/bin/bash
+```#!/bin/bash
 #1. show example files (first 20)
 ls -1 | head -n 20
 # If files are paired and named SAMPLE_1.fastq.gz and SAMPLE_2.fastq.gz:
@@ -40,13 +39,12 @@ wc -l all_samples.txt
 Randomly choose 50 samples
 Bash Script 2: `Selected.samples.sh` (Random Selection)
 
-```
-#!/bin/bash
+```#!/bin/bash
 # 2. Selected.samples.sh
 # Set how many samples you want
 N=50
 # Randomly pick N sample prefixes
-`shuf` -n $N all_samples.txt > selected_samples.txt
+shuf -n $N all_samples.txt > selected_samples.txt
 # Inspect selected
 cat selected_samples.txt | sed -n '1,20p'
 ```
