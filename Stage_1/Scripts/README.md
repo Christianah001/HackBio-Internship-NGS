@@ -401,9 +401,7 @@ plt.savefig('gene_distribution_heatmap.png')
 ```
 # 4. Results
 
-## Results
-
-### Antimicrobial Resistance (AMR) Profiles
+### 4.1 Antimicrobial Resistance (AMR) Profiles
 
 Analysis of the outbreak isolates revealed multiple high-prevalence antimicrobial resistance (AMR) genes.  
 The prevalence and functional implications of these determinants are summarized below:
