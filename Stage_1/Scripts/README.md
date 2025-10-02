@@ -36,7 +36,7 @@ for f in *_1*.fastq.gz; do echo "${f%%_1*}"; done | sort -u > all_samples.txt
 # Count how many unique prefixes found
 wc -l all_samples.txt
 ```
-###Randomly choose 50 samples
+### Randomly choose 50 samples
 Bash Script 2: `Selected.samples.sh` (Random Selection)
 
 ```#!/bin/bash
