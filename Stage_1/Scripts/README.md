@@ -4,8 +4,11 @@ This report details the bioinformatics analysis of 50 Listeria monocytogenes iso
 
 ## The objectives are:
 a. Confirm the Organism Identity
+
 b. Determine the Antimicrobial Resistance (AMR) Profile
+
 c. Detect Virulence (Toxin) Genes
+
 d. Suggest Evidence-Based Treatment Options
 
 # 2. Methodology: WGS Pipeline Overview
