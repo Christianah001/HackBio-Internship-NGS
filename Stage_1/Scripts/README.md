@@ -28,11 +28,35 @@ The following scripts automate the WGS pipeline used for this analysis.
 ```# show example files (first 20)
 ls -1 | head -n 20
 
-# If your files are paired and named SAMPLE_R1.fastq.gz and SAMPLE_R2.fastq.gz:
-ls *_R1*.fastq.gz | head
+# If your files are paired and named SAMPLE_1.fastq.gz and SAMPLE_2.fastq.gz:
+ls *_1*.fastq.gz | head
 
-# Create list of prefixes (remove the trailing _R1.fastq.gz)
-for f in *_R1*.fastq.gz; do echo "${f%%_R1*}"; done | sort -u > all_samples.txt
+# Create list of prefixes (remove the trailing _1.fastq.gz)
+for f in *_1*.fastq.gz; do echo "${f%%_1*}"; done | sort -u > all_samples.txt
 
 # Count how many unique prefixes found
-wc -l all_samples.txt```
+wc -l all_samples.txt
+```
+
+
+
+#📂 Dataset
+
+Samples: 100 bacterial isolates (downsampled to 50 for demo runs).
+
+Download Script:
+
+
+Bash Script 1: `Selected.samples.sh` (Random Selection)
+
+```#!/bin/bash
+# 1. Selected.samples.sh
+# Set how many samples you want
+N=50
+# Randomly pick N sample prefixes
+shuf -n $N all_samples.txt > selected_samples.txt
+# Inspect selected
+cat selected_samples.txt | sed -n '1,20p' ```
+
+
+
