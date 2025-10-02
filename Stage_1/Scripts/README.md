@@ -13,3 +13,7 @@ d. Suggest Evidence-Based Treatment Options
 
 # 2. Methodology: WGS Pipeline Overview
 The analysis follows a comprehensive microbial WGS pipeline, structured into four main phases using a suite of bioinformatics tools and custom Bash/Python scripts.
+
+| Phase | Steps | Tools Used | Purpose |
+| ---| --- | ---| ---|
+| I. Sample Preparation | Selection, Organization | shuf, ln -s (Bash) | Randomly selects the 50 isolates and uses symbolic links to organize the raw sequencing data (FASTQ files) for processing. |
