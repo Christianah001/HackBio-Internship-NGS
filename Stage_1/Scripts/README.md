@@ -20,3 +20,9 @@ The analysis follows a comprehensive microbial WGS pipeline, structured into fou
 | II. QC & Trimming | Quality Assessment, Filtering | FastQC, MultiQC, fastp | Assesses read quality, removes sequencing adaptors, and trims low-quality bases to ensure clean input for assembly.|
 | III. Assembly & QC | Genome Construction, Assessment | SPAdes, QUAST | Assembles cleaned reads into draft contiguous genome sequences (contigs.fasta). QUAST evaluates assembly quality metrics (N50, contig count). |
 | IV. Gene Analysis | Organism ID, Resistance/Virulence Screening | BLASTn, ABRicate, Pandas | Confirms species identity. ABRicate screens assemblies against the CARD (AMR) and VFDB (Toxin) databases. Python calculates prevalence and generates visualizations. |
+
+# 3. Functional Scripts
+The following scripts automate the WGS pipeline used for this analysis.
+
+## 3.1. Phase 1: Sample Preparation Scripts
+Bash Script 1: Selected.samples.sh (Random Selection)
