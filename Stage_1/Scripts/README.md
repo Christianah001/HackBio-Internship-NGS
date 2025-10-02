@@ -25,4 +25,4 @@ The analysis follows a comprehensive microbial WGS pipeline, structured into fou
 The following scripts automate the WGS pipeline used for this analysis.
 
 ## 3.1. Phase 1: Sample Preparation Scripts
-Bash Script 1: Selected.samples.sh (Random Selection)
+Bash Script 1: '''Selected.samples.sh (Random Selection)
