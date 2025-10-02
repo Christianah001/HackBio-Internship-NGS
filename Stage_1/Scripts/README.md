@@ -1,4 +1,4 @@
-## Comparative Genomic Analysis of Listeria monocytogenes Isolates from the South African Polony Outbreak (2017–2018)
+<img width="137" height="39" alt="image" src="https://github.com/user-attachments/assets/12f1daf7-080a-446f-a7fe-8904e37bb35c" />## Comparative Genomic Analysis of Listeria monocytogenes Isolates from the South African Polony Outbreak (2017–2018)
 # 1. Introduction and Objectives
 This report details the bioinformatics analysis of 50 Listeria monocytogenes isolates, a subset of the strains responsible for the devastating 2017–2018 South African listeriosis outbreak. The project utilizes Whole-Genome Sequencing (WGS) data to genetically characterize the pathogen, which is crucial for informing public health response and clinical guidance.
 
@@ -400,10 +400,14 @@ plt.tight_layout()
 plt.savefig('gene_distribution_heatmap.png')
 ```
 # 4. Results
-## 3.1. Organism Confirmation and Toxin Gene Identification
+## Organism Confirmation and Toxin Gene Identification
 The organism for all 50 isolates is confirmed to be Listeria monocytogenes.
 
-Analysis of virulence genes (Abricate/VFDB) shows that all core genes of the PrfA regulon (essential for pathogenicity) were found in 100% of the isolates. This highly uniform, pathogenic profile is typical for a severe, clonal outbreak strain.
+Analysis of virulence genes (Abricate/VFDB) shows that all core genes were found in 100% of the isolates. This highly uniform, pathogenic profile is typical for a severe, clonal outbreak strain.
+
+4.1. Identification of Virulence (Toxin) Genes
+Analysis with the VFDB database identified a full complement of critical virulence factors, explaining the strain's hypervirulence and the outbreak's high case fatality rate. A total of 37 unique virulence-associated genes were identified across the isolates as shown in the table below. Core virulence factors were found in 100% of the isolates while llsP has the least prevalence of 26% 
+
 
 The distribution of toxins across each samples
 ![the distribution across each sample](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins.png)
