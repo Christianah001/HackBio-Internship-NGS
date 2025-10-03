@@ -549,33 +549,30 @@ The prevalence and functional implications of these determinants are summarized 
 | **mprF**        | Peptide resistance | 49                      | 98%         | Membrane protein that modifies phosphatidylglycerol to repel cationic antimicrobial peptides; absent in *SRR27013258*. |
 
 #### Interpretation
-
 - **Universal resistance markers** (FosX, lin, norB) indicate that **fosfomycin, lincosamides, and fluoroquinolones** are likely ineffective across all isolates.  
 - **mprF**, present in 49/50 isolates, enhances resistance against host immune peptides, strengthening bacterial survival in the host environment.  
 - The coexistence of these genes highlights a **multidrug resistant (MDR) outbreak strain**, limiting therapeutic options.  
 
 ```
 ```
-## Organism Confirmation and Toxin Gene Identification
-The organism for all 50 isolates is confirmed to be Listeria monocytogenes.
-
-Analysis of virulence genes (Abricate/VFDB) shows that all core genes were found in 100% of the isolates. This highly uniform, pathogenic profile is typical for a severe, clonal outbreak strain.
-
-4.1. Identification of Virulence (Toxin) Genes
-Analysis with the VFDB database identified a full complement of critical virulence factors, explaining the strain's hypervirulence and the outbreak's high case fatality rate. A total of 37 unique virulence-associated genes were identified across the isolates as shown in the table below. SomCore virulence factors were found in 100% of the isolates while llsP has the least prevalence of 26% 
+### 4.3 Toxin Gene Identification
+Analysis with the virulence genes (Abricate/VFDB) database identified a full complement of critical virulence factors, explaining the strain's hypervirulence and the outbreak's high case fatality rate. A total of 37 unique virulence-associated genes were identified across the isolates as shown in the table below. Some core virulence factors were found in 100% of the isolates while llsP has the least prevalence of 26% as shown in the figure below.
 
 
 The distribution of toxins across each samples
 ![the distribution across each sample](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins.png)
 
 
-
-
-fhjkjlkj.
-
+Prevalence of Toxin Genes
 ![Prevalence of Toxins Genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins_across_50_samples.png)
+#### Interpretation
+These genes detected are key mediators of *Listeria* pathogenicity, enabling:  
+- **Escape from host vacuoles (hly, plcA)**  
+- **Cell-to-cell spread (actA)**  
+- **Invasion of epithelial cells (inlA, inlB)**  
+The presence of these virulence genes likely contributes to the **high fatality rate observed in the outbreak** by enhancing systemic infection and immune evasion.
 
-
+---
 
 
 
