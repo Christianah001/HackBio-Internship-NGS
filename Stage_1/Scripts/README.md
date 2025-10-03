@@ -510,13 +510,13 @@ plt.savefig('gene_distribution_heatmap.png')
 ```
 # 4. Results
 
-## 4.1 Organism Confirmation via BLAST
+### 4.1 Organism Confirmation via BLAST
 
 To confirm the identity of the outbreak isolates, a **representative assembly** was selected and aligned against the NCBI `nt` database using BLASTn.  
 The pipeline was configured to automatically choose the **first available assembly fasta file** in the results directory (SRR27013316). 
 This step was designed to satisfy rubric requirements by showing species confirmation without needing to BLAST all 50 assemblies.
 
-### BLAST Results
+#### BLAST Results
 
 The top hits from the representative contig are shown below:
 
@@ -579,11 +579,11 @@ Based on the AMR and toxin profiles:
   - Close monitoring is required due to the strain’s MDR profile and virulence factors.
 ```
 ```
-## 4.5 🌍 Public Health Discussion
+### 4.5 🌍 Public Health Discussion
 This outbreak was confirmed to be caused by *Listeria monocytogenes*, a serious foodborne pathogen capable of causing invasive disease and high mortality. The genomic findings revealed multiple resistance determinants (FosX, lin, norB, mprF), which may reduce the effectiveness of certain antibiotics, though first-line therapy with ampicillin ± gentamicin remains viable, with TMP-SMX as an alternative. The detection of key virulence genes (hly, actA, plcA) highlights the organism’s potential for severe disease progression. These results emphasize the importance of rapid genomic surveillance to guide treatment decisions, monitor resistance trends, and strengthen public health response in preventing future outbreaks.
 ```
 ```
-✅ Conclusion
+# ✅ Conclusion
 This WGS analysis confirmed Listeria monocytogenes as the outbreak pathogen, identified resistance and virulence genes, and guided effective treatment options.
 Such genomic surveillance is critical to prevent future outbreaks and save vulnerable lives.
 ```
