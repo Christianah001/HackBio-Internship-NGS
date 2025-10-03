@@ -47,27 +47,11 @@ while read SRR; do
       -o $RAW_DIR/${SRR}_1.fastq.gz
   curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${SRR:0:6}/${SRR: -3}/$SRR/${SRR}_2.fastq.gz \
       -o $RAW_DIR/${SRR}_2.fastq.gz
-done < srr_ids.txt
+done < all_samples.txt
 
 echo ">>> Download finished. Sample of raw files:"
 ls -lh $RAW_DIR | head -n 20
 ```
-
-### Identify sample name pattern and list sample prefixes
-Bash Script 1: `link_samples.sh` 
-```bash
-#!/bin/bash
-#1. show example files (first 20)
-ls -1 | head -n 20
-# If files are paired and named SAMPLE_1.fastq.gz and SAMPLE_2.fastq.gz:
-ls *_1*.fastq.gz | head
-# Create list of prefixes (remove the trailing _1.fastq.gz)
-for f in *_1*.fastq.gz; do echo "${f%%_1*}"; done | sort -u > all_samples.txt
-# Count how many unique prefixes found
-wc -l all_samples.txt
-```
-
-
 
 ### Randomly choose 50 samples
 Bash Script 2: `Selected.samples.sh` (Random Selection)
@@ -79,6 +63,8 @@ Bash Script 2: `Selected.samples.sh` (Random Selection)
 N=50
 # Randomly pick N sample prefixes
 shuf -n $N all_samples.txt > selected_samples.txt
+echo ">>> Selected samples:"
+
 # Inspect selected
 cat selected_samples.txt | sed -n '1,20p'
 ```
@@ -86,9 +72,9 @@ cat selected_samples.txt | sed -n '1,20p'
 ## 3.2. Phase 2: QC & Trimming Scripts
 Bash Script 3: `qc.sh` (Initial Raw QC)
 ```bash
-#!/bin/bash
 # Script: 03_qc.sh
-# Purpose: Run FastQC on selected reads and summarize with MultiQC
+# Purpose: Run FastQC + MultiQC on selected reads
+# Why:    Detect sequencing quality issues before trimming.
 
 SELECTED_DIR="selected"
 QC_DIR="qc/raw_fastqc"
@@ -129,33 +115,51 @@ echo "========================================"
 Bash Script 4: `fastp.sh` (Read Trimming and Filtering)
 ```bash
 #!/bin/bash
-# Script: 04_fastp.sh
-# Purpose: Perform adapter trimming & quality filtering on selected reads
+# Script: 05_fastp.sh
+# Purpose: Perform adapter trimming and quality filtering with fastp
+# Why:    Clean data improves assembly and reduces false positives in AMR/toxin detection.
 
 SELECTED_DIR="selected"
-TRIMMED_DIR="trimmed"
+TRIM_DIR="trimmed"
+QC_DIR="qc/trimmed_fastqc"
 FASTP_REPORTS="qc/fastp_reports"
+MULTIQC_DIR="qc/multiqc_trimmed"
 
-mkdir -p $TRIMMED_DIR $FASTP_REPORTS
+mkdir -p $TRIM_DIR $QC_DIR $FASTP_REPORTS $MULTIQC_DIR
 
-# Loop over samples
-THREADS_PER_SAMPLE=4
+THREADS=4
+
+echo "========================================"
+echo " Step 6: Running fastp on selected samples"
+echo "========================================"
 
 while read sample; do
-  echo ">>> Trimming $sample"
+  echo ">>> Processing sample: $sample"
+  
   fastp \
-    -i $SELECTED_DIR/${sample}_1.fastq.gz \
-    -I $SELECTED_DIR/${sample}_2.fastq.gz \
-    -o $TRIMMED_DIR/${sample}_1.trim.fastq.gz \
-    -O $TRIMMED_DIR/${sample}_2.trim.fastq.gz \
-    -w $THREADS_PER_SAMPLE \
+    -i ${SELECTED_DIR}/${sample}_1.fastq.gz \
+    -I ${SELECTED_DIR}/${sample}_2.fastq.gz \
+    -o ${TRIM_DIR}/${sample}_1.trim.fastq.gz \
+    -O ${TRIM_DIR}/${sample}_2.trim.fastq.gz \
+    -w $THREADS \
     --detect_adapter_for_pe \
     --cut_front --cut_tail \
     --cut_window_size 4 --cut_mean_quality 20 \
     --length_required 50 \
-    --html $FASTP_REPORTS/${sample}_fastp.html \
-    --json $FASTP_REPORTS/${sample}_fastp.json
+    --html ${FASTP_REPORTS}/${sample}_fastp.html \
+    --json ${FASTP_REPORTS}/${sample}_fastp.json
 done < selected_samples.txt
+
+echo ">>> fastp trimming completed."
+
+echo "========================================"
+echo " Running MultiQC on fastp outputs"
+echo "========================================"
+
+multiqc $FASTP_REPORTS -o $MULTIQC_DIR
+
+echo ">>> MultiQC summary generated at $MULTIQC_DIR/multiqc_report.html"
+
 ```
 
 ### Post-Trimming QC
