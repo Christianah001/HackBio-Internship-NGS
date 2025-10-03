@@ -528,7 +528,7 @@ The top hits from the representative contig are shown below:
 | NODE_1_length_149978_cov_80.396174     | CP096157.1        | 100                  | *Listeria monocytogenes* strain FSL F6-0366 (H7858) chromosome, complete genome |
 | NODE_1_length_149978_cov_80.396174     | CP111150.1        | 100                  | *Listeria monocytogenes* strain 19-02390 chromosome, complete genome      |
 
-### Interpretation
+#### Interpretation
 
 - The **100% identity matches** to multiple *Listeria monocytogenes* reference genomes confirm that the outbreak strain is indeed *Listeria monocytogenes*.  
 - Only a **representative sample** was needed to demonstrate species identity; the rest of the isolates were assumed to be the same species since they were sequenced from the same outbreak collection.  
@@ -548,15 +548,14 @@ The prevalence and functional implications of these determinants are summarized 
 | **norB**        | Fluoroquinolones   | 50                      | 100%        | Multidrug efflux pump, expelling fluoroquinolones and other structurally unrelated antibiotics such as tetracyclines. |
 | **mprF**        | Peptide resistance | 49                      | 98%         | Membrane protein that modifies phosphatidylglycerol to repel cationic antimicrobial peptides; absent in *SRR27013258*. |
 
----
-
-### Interpretation
+#### Interpretation
 
 - **Universal resistance markers** (FosX, lin, norB) indicate that **fosfomycin, lincosamides, and fluoroquinolones** are likely ineffective across all isolates.  
 - **mprF**, present in 49/50 isolates, enhances resistance against host immune peptides, strengthening bacterial survival in the host environment.  
 - The coexistence of these genes highlights a **multidrug resistant (MDR) outbreak strain**, limiting therapeutic options.  
 
-
+```
+```
 ## Organism Confirmation and Toxin Gene Identification
 The organism for all 50 isolates is confirmed to be Listeria monocytogenes.
 
