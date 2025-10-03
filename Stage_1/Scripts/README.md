@@ -533,7 +533,6 @@ The top hits from the representative contig are shown below:
 - The **100% identity matches** to multiple *Listeria monocytogenes* reference genomes confirm that the outbreak strain is indeed *Listeria monocytogenes*.  
 - Only a **representative sample** was needed to demonstrate species identity; the rest of the isolates were assumed to be the same species since they were sequenced from the same outbreak collection.  
 - This validation step shows that downstream AMR and virulence analyses are being performed on the correct pathogen.
-
 ```
 ```
 ### 4.2 Antimicrobial Resistance (AMR) Profiles
@@ -552,7 +551,6 @@ The prevalence and functional implications of these determinants are summarized 
 - **Universal resistance markers** (FosX, lin, norB) indicate that **fosfomycin, lincosamides, and fluoroquinolones** are likely ineffective across all isolates.  
 - **mprF**, present in 49/50 isolates, enhances resistance against host immune peptides, strengthening bacterial survival in the host environment.  
 - The coexistence of these genes highlights a **multidrug resistant (MDR) outbreak strain**, limiting therapeutic options.  
-
 ```
 ```
 ### 4.3 Toxin Gene Identification
@@ -571,25 +569,22 @@ These genes detected are key mediators of *Listeria* pathogenicity, enabling:
 - **Cell-to-cell spread (actA)**  
 - **Invasion of epithelial cells (inlA, inlB)**  
 The presence of these virulence genes likely contributes to the **high fatality rate observed in the outbreak** by enhancing systemic infection and immune evasion.
-
 ---
-
-
-
-
-**Clinical Implication:** This outbreak strain poses significant challenges for treatment, requiring alternative antimicrobials (e.g., vancomycin, linezolid) and emphasizing the importance of genomic surveillance for outbreak management.  
-
-
-🌍 Public Health Discussion
-
-This outbreak highlights how processed meats can transmit lethal pathogens.
-
-Whole-genome sequencing (WGS) enabled rapid outbreak source tracing and resistance monitoring.
-
-Strengthening food safety regulation and real-time WGS capacity in Africa is crucial.
-
-
+## 4.4. Suggested Treatment Options
+Based on the AMR and toxin profiles:  
+- **Ineffective therapies**: Fosfomycin, fluoroquinolones, clindamycin (due to universal resistance).  
+- **Potential options**:  
+  - **Ampicillin (± gentamicin synergy)** remains the first-line treatment for *Listeria* infections.  
+  - **Trimethoprim-sulfamethoxazole (TMP-SMX)** can be used as an alternative, especially in penicillin-allergic patients.  
+  - Close monitoring is required due to the strain’s MDR profile and virulence factors.
+```
+```
+## 4.5 🌍 Public Health Discussion
+This outbreak was confirmed to be caused by *Listeria monocytogenes*, a serious foodborne pathogen capable of causing invasive disease and high mortality. The genomic findings revealed multiple resistance determinants (FosX, lin, norB, mprF), which may reduce the effectiveness of certain antibiotics, though first-line therapy with ampicillin ± gentamicin remains viable, with TMP-SMX as an alternative. The detection of key virulence genes (hly, actA, plcA) highlights the organism’s potential for severe disease progression. These results emphasize the importance of rapid genomic surveillance to guide treatment decisions, monitor resistance trends, and strengthen public health response in preventing future outbreaks.
+```
+```
 ✅ Conclusion
-
 This WGS analysis confirmed Listeria monocytogenes as the outbreak pathogen, identified resistance and virulence genes, and guided effective treatment options.
 Such genomic surveillance is critical to prevent future outbreaks and save vulnerable lives.
+```
+```
