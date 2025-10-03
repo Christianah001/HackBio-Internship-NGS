@@ -564,8 +564,7 @@ The distribution of toxins across each samples
 Prevalence of Toxin Genes
 ![Prevalence of Toxins Genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_1/Results/Prevalence_of_Toxins_across_50_samples.png)
 #### Interpretation
-Gene Distribution Across Each Sample (Heatmap)
-To show the distribution of genes across each of the 50 isolates, I've generated a Presence/Absence Heatmap.
+Gene Distribution Across Each Sample (Heatmap) shows the distribution of genes across each of the 50 isolates, I've generated a Presence/Absence Heatmap.
 Each row represents one of your 50 isolates (identified by its SRR ID).
 Each column represents a unique gene.
 A dark square (1) indicates the gene is Present in that isolate.
