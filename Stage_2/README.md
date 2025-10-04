@@ -78,7 +78,6 @@ This pipeline performs the following steps:
 ## Bash Pipeline
 
 ```bash
-```
 #!/bin/bash
 # rna_seq_pipeline.sh
 # Complete RNA-seq preprocessing and quantification pipeline
@@ -101,7 +100,8 @@ LOG_DIR="$BASE_DIR/logs"
 
 mkdir -p "$RAW_DIR" "$TRIM_DIR" "$QC_DIR" "$QC_TRIM" "$GENOME_DIR" \
          "$GTF_DIR" "$STAR_INDEX_DIR" "$BAM_DIR" "$COUNT_DIR" "$LOG_DIR"
-
+```
+```bash
 # ---------------------------
 # 1. Download SRR FASTQs
 # ---------------------------
@@ -127,7 +127,7 @@ while read SRR; do
     done
 done < "$BASE_DIR/srrs.txt"
 echo "=== FASTQ download completed ==="
-
+```
 # ---------------------------
 # 2. QC raw FASTQs
 # ---------------------------
