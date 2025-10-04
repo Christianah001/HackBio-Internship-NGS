@@ -74,13 +74,13 @@ This pipeline performs the following steps:
 ---
 
 ## Bash Pipeline
+# Complete RNA-seq preprocessing and quantification pipeline
 
+0. All project files and outputs were organized into directories
 ```bash
 #!/bin/bash
 # rna_seq_pipeline.sh
-# Complete RNA-seq preprocessing and quantification pipeline
 
-All project files and outputs were organized into directories for clarity.
 # ---------------------------
 # 0. Set Directories
 # ---------------------------
@@ -100,7 +100,8 @@ LOG_DIR="$BASE_DIR/logs"
 mkdir -p "$RAW_DIR" "$TRIM_DIR" "$QC_DIR" "$QC_TRIM" "$GENOME_DIR" \
          "$GTF_DIR" "$STAR_INDEX_DIR" "$BAM_DIR" "$COUNT_DIR" "$LOG_DIR"
 ```
-2. Download Raw RNA-seq FASTQ Files
+1. Download Raw RNA-seq FASTQ Files
+
 SRR IDs for control and UV-C treated samples were downloaded from ENA using FTP links.
 ```bash
 # ---------------------------
@@ -129,6 +130,9 @@ while read SRR; do
 done < "$BASE_DIR/srrs.txt"
 echo "=== FASTQ download completed ==="
 ```
+2. Quality Control (FastQC + MultiQC)
+
+Raw FASTQ files were assessed for quality before trimming.
 ```bash
 # ---------------------------
 # 2. QC raw FASTQs
@@ -141,7 +145,11 @@ done
 
 echo "=== MultiQC summary ==="
 multiqc "$QC_DIR" --outdir "$QC_DIR" >"$LOG_DIR/multiqc.log" 2>&1
+```
+3. Trimming (fastp) and QC
 
+Reads were trimmed to remove adapters and low-quality bases, then re-checked with FastQC.
+```bash
 # ---------------------------
 # 3. Trim with fastp + QC
 # ---------------------------
@@ -163,6 +171,9 @@ done
 multiqc "$QC_TRIM" --outdir "$QC_TRIM" >>"$LOG_DIR/multiqc_trimmed.log" 2>&1
 echo "=== Trimming + QC completed ==="
 ```
+4. Reference Genome Download and STAR Index
+
+The Arabidopsis TAIR10 genome and GFF3 annotation were downloaded from Ensembl Plants, then indexed for STAR alignment.
 ```bash
 # ---------------------------
 # 4. Download reference genome + STAR index
@@ -184,6 +195,9 @@ STAR --runThreadN 12 \
      --sjdbOverhang 99
 echo "=== STAR genome index ready ==="
 ```
+5. STAR Alignment
+
+Trimmed reads were aligned to TAIR10 with STAR. BAM files were sorted and indexed.
 ```bash
 # ---------------------------
 # 5. STAR Alignment
@@ -212,6 +226,9 @@ for fq in "$TRIM_DIR"/*_trim.fastq.gz; do
 done
 echo "=== STAR alignment completed ==="
 ```
+7. Read Counting (featureCounts)
+
+Gene-level quantification was performed using the GFF3 annotation.
 ```bash
 # ---------------------------
 # 6. featureCounts
