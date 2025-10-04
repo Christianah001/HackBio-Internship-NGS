@@ -78,6 +78,7 @@ This pipeline performs the following steps:
 ## Bash Pipeline
 
 `bash
+```
 #!/bin/bash
 # rna_seq_pipeline.sh
 # Complete RNA-seq preprocessing and quantification pipeline
