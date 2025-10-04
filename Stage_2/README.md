@@ -77,7 +77,7 @@ This pipeline performs the following steps:
 
 ## Bash Pipeline
 
-`bash
+```bash
 ```
 #!/bin/bash
 # rna_seq_pipeline.sh
