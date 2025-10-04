@@ -241,3 +241,202 @@ featureCounts -O -t gene -g ID \
 
 echo "=== featureCounts done. Counts file at $COUNT_DIR/counts.txt ==="
 ```
+
+# 8. RNA-seq Differential Expression Analysis
+
+```r
+# ---------------------------------------------------------------
+# 0. Set Working Directory
+# ---------------------------------------------------------------
+# Set the directory where the project files (counts.txt, Metadata.csv) are stored
+setwd("C:/Users/ELITEBOOK 1040 G3/Desktop/HackBio NGS/Stage 2")
+
+# ---------------------------------------------------------------
+# 1. Install and Load Required Packages
+# ---------------------------------------------------------------
+# Bioconductor manager for package installation
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+# List of required packages for DE analysis and visualization
+packages <- c("DESeq2", "pheatmap", "dplyr", "ggplot2",
+              "clusterProfiler", "org.At.tair.db")
+
+# Loop through packages: install if missing, then load
+for (pkg in packages) {
+  if (!require(pkg, character.only = TRUE)) {
+    BiocManager::install(pkg, ask = FALSE)
+  }
+  library(pkg, character.only = TRUE)
+}
+
+# Install additional package for log fold change shrinkage
+install.packages("ashr")
+
+# ---------------------------------------------------------------
+# 2. Import Data
+# ---------------------------------------------------------------
+# Load featureCounts output as count matrix
+counts <- read.delim("counts.txt")
+
+# Load metadata describing sample conditions
+metadata <- read.csv("Metadata.csv")
+
+# Quick view of the first rows
+head(counts)
+head(metadata)
+
+# ---------------------------------------------------------------
+# 3. Clean and Align Metadata
+# ---------------------------------------------------------------
+# Assign descriptive sample names
+metadata$sample <- c("Control_1", "Control_2", "Control_3",
+                     "Treated_1", "Treated_2", "Treated_3")
+
+# Set condition as a factor with control as reference
+metadata$condition <- factor(metadata$condition, levels = c("control", "treated"))
+
+# Preview metadata
+head(metadata)
+
+# ---------------------------------------------------------------
+# 4. Prepare Count Matrix
+# ---------------------------------------------------------------
+# Align column names in count matrix with metadata sample names
+colnames(counts)[7:12] <- metadata$sample
+
+# Extract count data for analysis
+raw_counts <- counts[, c("Geneid", metadata$sample)]
+
+# Set rownames as Gene IDs
+rownames(raw_counts) <- raw_counts$Geneid
+
+# Remove the Geneid column from the data frame
+raw_counts <- raw_counts[, -1]
+
+# Verify column names match metadata
+all(colnames(raw_counts) == metadata$sample)
+
+# Preview the prepared count matrix
+head(raw_counts)
+
+# ---------------------------------------------------------------
+# 5. Create DESeq2 Dataset
+# ---------------------------------------------------------------
+# Create DESeq2 dataset object
+dds <- DESeqDataSetFromMatrix(countData = raw_counts,
+                              colData   = metadata,
+                              design    = ~ condition)
+
+# Relevel factor to set control as reference for DE analysis
+dds$condition <- relevel(dds$condition, ref = "control")
+
+# ---------------------------------------------------------------
+# 6. Run DESeq2 Analysis
+# ---------------------------------------------------------------
+# Run differential expression analysis
+dds <- DESeq(dds)
+
+# Extract DE results (log2 fold change and p-values)
+res <- results(dds)
+
+# Shrink log2 fold changes for more accurate estimates
+res <- lfcShrink(dds, coef = "condition_treated_vs_control", type = "ashr")
+
+# Preview DE results
+head(res)
+summary(res)
+
+# ---------------------------------------------------------------
+# 7. Volcano Plot (interactive)
+# ---------------------------------------------------------------
+# Basic volcano plot: log2 fold change vs -log10 adjusted p-value
+plot(res$log2FoldChange,
+     -log10(res$padj),
+     pch = 19, cex = 0.4,
+     col = "grey",
+     xlab = "Log2 Fold Change (UV-C Treated vs Control)",
+     ylab = "-log10 Adjusted P-value",
+     main = "Volcano Plot")
+
+# Add thresholds for significance
+abline(v = c(-1, 1), lty = 2, col = "blue")  # fold change cutoff
+abline(h = -log10(0.05), lty = 2, col = "red")  # padj cutoff
+
+# Highlight significant up- and down-regulated genes
+up   <- subset(res, padj < 0.05 & log2FoldChange > 1)
+down <- subset(res, padj < 0.05 & log2FoldChange < -1)
+
+points(up$log2FoldChange, -log10(up$padj), col="salmon", pch=19, cex=0.5)
+points(down$log2FoldChange, -log10(down$padj), col="lightblue", pch=19, cex=0.5)
+
+# ---------------------------------------------------------------
+# 8. Heatmap of DE Genes (interactive)
+# ---------------------------------------------------------------
+# Combine all significant DE genes
+de_genes <- c(rownames(up), rownames(down))
+
+# Generate heatmap only if more than 2 DE genes
+if (length(de_genes) > 2) {
+  pheatmap(raw_counts[de_genes, ],
+           scale = "row",
+           show_rownames = FALSE,
+           clustering_distance_rows = "euclidean",
+           clustering_distance_cols = "euclidean",
+           main = "Differentially Expressed Genes (scaled)")
+}
+
+# Heatmap for Top 50 DE Genes
+ordered_cols <- c("Control_1","Control_2","Control_3",
+                  "Treated_1","Treated_2","Treated_3")
+
+# Define sample grouping for annotation
+sample_group <- data.frame(
+  Treatment = c("Control","Control","Control","UV-C","UV-C","UV-C")
+)
+
+# Define colors for annotations
+ann_colors <- list(
+  Treatment = c("Control" = "skyblue", "UV-C" = "tomato")
+)
+
+# Select top 50 genes based on adjusted p-value
+top <- head(order(res$padj), 50)
+
+# Plot heatmap with annotations
+pheatmap(raw_counts[top, ordered_cols],
+         scale = "row",
+         cluster_cols = FALSE,
+         fontsize_row = 6, 
+         annotation_col = sample_group[ordered_cols, , drop=FALSE],
+         annotation_colors = ann_colors,
+         main = "Top 50 DE Genes (Grouped by Treatment)")
+
+# ---------------------------------------------------------------
+# 9. Filter Top 100 DE Genes
+# ---------------------------------------------------------------
+# Filter results for top significant DE genes (|log2FC| > 2.5 and padj < 0.05)
+res_filtered <- res %>%
+  as.data.frame() %>%
+  filter(!is.na(padj)) %>%
+  filter(abs(log2FoldChange) > 2.5, padj < 0.05) %>%
+  arrange(padj)
+
+# Select top 100
+top100 <- head(res_filtered, 100)
+
+# ---------------------------------------------------------------
+# 10. GO Enrichment Analysis (BP, CC, MF)
+# ---------------------------------------------------------------
+# Prepare gene list (remove any prefix like "gene:")
+gene_list <- rownames(top100)
+gene_list <- gsub("^gene:", "", gene_list)  # Remove "gene:" prefix
+
+# Perform GO enrichment analysis using clusterProfiler
+ego <- enrichGO(gene          = gene_list,
+                OrgDb         = org.At.tair.db,
+                keyType       = "TAIR",
+                ont           = "ALL",
+                pAdjustMethod = "BH",
+                qvalueCutoff  = 0.05)
+```
