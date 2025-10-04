@@ -2,8 +2,6 @@
 
 **Author:**  
 Funmilayo C. Ligali  
-Graduate Research Assistant – Nigerian Institute of Medical Research & CeGRIB, Mountain Top University
-
 ---
 
 ## Introduction
@@ -82,6 +80,7 @@ This pipeline performs the following steps:
 # rna_seq_pipeline.sh
 # Complete RNA-seq preprocessing and quantification pipeline
 
+All project files and outputs were organized into directories for clarity.
 # ---------------------------
 # 0. Set Directories
 # ---------------------------
@@ -101,6 +100,8 @@ LOG_DIR="$BASE_DIR/logs"
 mkdir -p "$RAW_DIR" "$TRIM_DIR" "$QC_DIR" "$QC_TRIM" "$GENOME_DIR" \
          "$GTF_DIR" "$STAR_INDEX_DIR" "$BAM_DIR" "$COUNT_DIR" "$LOG_DIR"
 ```
+2. Download Raw RNA-seq FASTQ Files
+SRR IDs for control and UV-C treated samples were downloaded from ENA using FTP links.
 ```bash
 # ---------------------------
 # 1. Download SRR FASTQs
@@ -128,6 +129,7 @@ while read SRR; do
 done < "$BASE_DIR/srrs.txt"
 echo "=== FASTQ download completed ==="
 ```
+```bash
 # ---------------------------
 # 2. QC raw FASTQs
 # ---------------------------
@@ -160,7 +162,8 @@ done
 
 multiqc "$QC_TRIM" --outdir "$QC_TRIM" >>"$LOG_DIR/multiqc_trimmed.log" 2>&1
 echo "=== Trimming + QC completed ==="
-
+```
+```bash
 # ---------------------------
 # 4. Download reference genome + STAR index
 # ---------------------------
@@ -180,7 +183,8 @@ STAR --runThreadN 12 \
      --sjdbGTFfile "$GTF_DIR/TAIR10.gff3" \
      --sjdbOverhang 99
 echo "=== STAR genome index ready ==="
-
+```
+```bash
 # ---------------------------
 # 5. STAR Alignment
 # ---------------------------
@@ -207,7 +211,8 @@ for fq in "$TRIM_DIR"/*_trim.fastq.gz; do
     fi
 done
 echo "=== STAR alignment completed ==="
-
+```
+```bash
 # ---------------------------
 # 6. featureCounts
 # ---------------------------
