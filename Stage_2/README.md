@@ -534,6 +534,7 @@ pheatmap(vsd_mat, scale = "row", cluster_cols = FALSE, show_rownames = FALSE,
 ```
 ```
 Volcano Plot
+
 ![Volcano Plot](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/Volcano%20res_df.png)
 ```
 ```
@@ -544,7 +545,8 @@ The UV-C treatment caused a large-scale, highly significant transcriptional repr
 ```
 ```
 Heatmap of Top 100 Differentially Expressed Genes
-![Heatmap of Differentially expressed genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/DE%20Genes.png)
+
+![Heatmap of Differentially expressed genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/top%20100%20DE%20genes.png)
 ```
 ```
 The Heatmap provides irrefutable visual validation of the experiment's success.
@@ -560,6 +562,7 @@ It displays the expression values of the most significant genes, where red signi
 ```
 ```
 Functional Interpretation (GO and KEGG Enrichment)
+
 ![GO](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/GO%20top5.png)
 ```
 ```
