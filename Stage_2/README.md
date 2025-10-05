@@ -350,95 +350,185 @@ summary(res)
 # ---------------------------------------------------------------
 # 7. Volcano Plot (interactive)
 # ---------------------------------------------------------------
-# Basic volcano plot: log2 fold change vs -log10 adjusted p-value
-plot(res$log2FoldChange,
-     -log10(res$padj),
-     pch = 19, cex = 0.4,
-     col = "grey",
-     xlab = "Log2 Fold Change (UV-C Treated vs Control)",
-     ylab = "-log10 Adjusted P-value",
-     main = "Volcano Plot")
+# Convert results to data frame
+res_df <- as.data.frame(res) %>% na.omit()
+res_df$GeneID <- rownames(res_df)
 
-# Add thresholds for significance
-abline(v = c(-1, 1), lty = 2, col = "blue")  # fold change cutoff
-abline(h = -log10(0.05), lty = 2, col = "red")  # padj cutoff
+# Define significance thresholds
+padj_cutoff <- 0.05
+lfc_cutoff  <- 1
 
-# Highlight significant up- and down-regulated genes
-up   <- subset(res, padj < 0.05 & log2FoldChange > 1)
-down <- subset(res, padj < 0.05 & log2FoldChange < -1)
+# Volcano Plot
+res_df <- res_df %>%
+  mutate(
+    DE = case_when(
+      log2FoldChange > lfc_cutoff & padj < padj_cutoff ~ "Up Regulated",
+      log2FoldChange < -lfc_cutoff & padj < padj_cutoff ~ "Down Regulated",
+      TRUE ~ "Not Significant"
+    )
+  )
 
-points(up$log2FoldChange, -log10(up$padj), col="salmon", pch=19, cex=0.5)
-points(down$log2FoldChange, -log10(down$padj), col="lightblue", pch=19, cex=0.5)
-
-# ---------------------------------------------------------------
-# 8. Heatmap of DE Genes (interactive)
-# ---------------------------------------------------------------
-# Combine all significant DE genes
-de_genes <- c(rownames(up), rownames(down))
-
-# Generate heatmap only if more than 2 DE genes
-if (length(de_genes) > 2) {
-  pheatmap(raw_counts[de_genes, ],
-           scale = "row",
-           show_rownames = FALSE,
-           clustering_distance_rows = "euclidean",
-           clustering_distance_cols = "euclidean",
-           main = "Differentially Expressed Genes (scaled)")
-}
+ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj), color = DE)) +
+  geom_point(size = 0.5) +
+  scale_color_manual(values = c("Up Regulated" = "salmon", "Down Regulated" = "lightblue", "Not Significant" = "grey")) +
+  geom_vline(xintercept = c(-lfc_cutoff, lfc_cutoff), linetype = "dashed", color = "blue") +
+  geom_hline(yintercept = -log10(padj_cutoff), linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(title = "Volcano Plot: Vasculature UV-C vs Control",
+       x = expression(log[2]~"Fold Change"),
+       y = expression(-log[10]~"Adjusted P-value"))
 
 # Heatmap for Top 50 DE Genes
-ordered_cols <- c("Control_1","Control_2","Control_3",
-                  "Treated_1","Treated_2","Treated_3")
+ordered_cols <- c("Control_1","Control_2","Control_3", "Treated_1","Treated_2","Treated_3")
+sample_group <- data.frame(Treatment = factor(c("Control","Control","Control","UV-C","UV-C","UV-C"), levels=c("Control", "UV-C")))
+rownames(sample_group) <- ordered_cols
 
-# Define sample grouping for annotation
-sample_group <- data.frame(
-  Treatment = c("Control","Control","Control","UV-C","UV-C","UV-C")
-)
+top_50 <- res_df %>% arrange(padj) %>% head(50)
+top_50_genes <- top_50$GeneID
 
-# Define colors for annotations
-ann_colors <- list(
-  Treatment = c("Control" = "skyblue", "UV-C" = "tomato")
-)
+# Extract Normalized/Regularized Log Transformed counts for visualization
+vsd <- vst(dds, blind=FALSE)
+vsd_mat <- assay(vsd)[top_50_genes, ordered_cols]
 
-# Select top 50 genes based on adjusted p-value
-top <- head(order(res$padj), 50)
-
-# Plot heatmap with annotations
-pheatmap(raw_counts[top, ordered_cols],
+# Plot heatmap
+pheatmap(vsd_mat,
          scale = "row",
          cluster_cols = FALSE,
-         fontsize_row = 6, 
-         annotation_col = sample_group[ordered_cols, , drop=FALSE],
-         annotation_colors = ann_colors,
-         main = "Top 50 DE Genes (Grouped by Treatment)")
+         show_rownames = FALSE, 
+         annotation_col = sample_group,
+         main = "Heatmap of Top 50 DE Genes (VSD Normalized)")
+# ---------------------------------------------------------------
+# 8. List Top 100 Differentially Expressed Genes
+# ---------------------------------------------------------------
+# Filter for significant DE genes (padj < 0.05 and |log2FoldChange| > 1)
+sig_res_df <- res_df %>%
+  filter(padj < padj_cutoff & abs(log2FoldChange) > lfc_cutoff)
+
+# Order significant genes by adjusted p-value (smallest first)
+ordered_sig_res_df <- sig_res_df[order(sig_res_df$padj), ]
+
+# List the top 100 differentially expressed genes
+top_100_de_genes <- head(ordered_sig_res_df, 100)
+
+print("Top 10 Differentially Expressed Genes:")
+print(head(top_100_de_genes))
+
+write.csv(top_100_de_genes, "top_100_DE_genes_vasculature_UV.csv", row.names = FALSE)
 
 # ---------------------------------------------------------------
-# 9. Filter Top 100 DE Genes
-# ---------------------------------------------------------------
-# Filter results for top significant DE genes (|log2FC| > 2.5 and padj < 0.05)
-res_filtered <- res %>%
-  as.data.frame() %>%
-  filter(!is.na(padj)) %>%
-  filter(abs(log2FoldChange) > 2.5, padj < 0.05) %>%
-  arrange(padj)
+# 9 Functional Enrichment Analysis (GO and KEGG)
+significant_genes <- top_100_de_genes$GeneID
 
-# Select top 100
-top100 <- head(res_filtered, 100)
+# Print a few cleaned IDs to verify the format
+print(head(cleaned_significant_genes))
+
+# Get all valid key types for the annotation package
+keytypes(org.At.tair.db)
+
+# Get a list of actual TAIR Gene IDs present in the database
+head(keys(org.At.tair.db, keytype="TAIR"))
+
+# REMOVE VERSION NUMBER
+# If the GeneIDs contain version numbers (e.g., AT1G01010.1), remove them
+cleaned_significant_genes_v1 <- sub("\\..*$", "", significant_genes)
+
+# REMOVE "gene:" PREFIX (THIS IS THE CRUCIAL STEP)
+# Inspection shows IDs are "gene:AT...", which is not a valid TAIR key.
+final_cleaned_genes <- sub("^gene:", "", cleaned_significant_genes_v1)
+
+# Map the final cleaned IDs to ENTREZID
+gene_list_mapped <- bitr(final_cleaned_genes,
+                         fromType = "TAIR",
+                         toType = "ENTREZID",
+                         OrgDb = org.At.tair.db,
+                         drop = TRUE)
 
 # ---------------------------------------------------------------
-# 10. GO Enrichment Analysis (BP, CC, MF)
+# 10. Functional Enrichment Analysis (KEGG and GO)
 # ---------------------------------------------------------------
-# Prepare gene list (remove any prefix like "gene:")
-gene_list <- rownames(top100)
-gene_list <- gsub("^gene:", "", gene_list)  # Remove "gene:" prefix
 
-# Perform GO enrichment analysis using clusterProfiler
-ego <- enrichGO(gene          = gene_list,
-                OrgDb         = org.At.tair.db,
-                keyType       = "TAIR",
-                ont           = "ALL",
-                pAdjustMethod = "BH",
-                qvalueCutoff  = 0.05)
+# The list of final cleaned TAIR Locus IDs:
+final_cleaned_genes <- sub("^gene:", "", sub("\\..*$", "", significant_genes))
+
+# --- A. KEGG Pathway Enrichment (Use TAIR IDs Directly for 'ath') ---
+print("--- Running KEGG Enrichment (Using TAIR Locus IDs) ---")
+kegg_results <- enrichKEGG(gene         = final_cleaned_genes, # USE TAIR LOCUS IDs HERE
+                           organism     = 'ath', 
+                           pvalueCutoff = 0.05)
+
+# --- B. GO Term Enrichment (Use TAIR IDs directly) ---
+print("--- Running GO Enrichment (Biological Process) ---")
+go_results <- enrichGO(gene          = final_cleaned_genes, # Use the same cleaned TAIR IDs
+                       OrgDb         = org.At.tair.db,
+                       keyType       = 'TAIR',
+                       ont           = "BP",
+                       pAdjustMethod = "BH",
+                       pvalueCutoff  = 0.05,
+                       qvalueCutoff  = 0.1)
+
+# Simplify GO results
+go_results_simplified <- simplify(go_results)
+
+
+# --- C. Extract Top 5 Enriched Pathways ---
+safe_to_df <- function(res, source) {
+  if (is.null(res) || nrow(res@result) == 0) {
+    return(data.frame(ID=character(), Description=character(), p.adjust=numeric(), Pathway_Source=character(), stringsAsFactors=FALSE))
+  }
+  as.data.frame(res@result) %>%
+    mutate(Pathway_Source = source) %>%
+    dplyr::select(ID, Description, p.adjust, Pathway_Source)
+}
+
+
+if (!is.null(go_results_simplified) && nrow(go_results_simplified@result) > 0) {
+  print("Generating GO Dot Plot...")
+  dotplot(go_results_simplified, 
+          showCategory=5, 
+          title="GO Biological Process Enrichment (Top 5)")
+} else {
+  print("Skipping GO Dot Plot: No significant GO terms found.")
+}
+
+
+# Extract and combine results
+go_df <- safe_to_df(go_results_simplified, "GO_BP")
+kegg_df <- safe_to_df(kegg_results, "KEGG")
+
+all_enriched_pathways <- bind_rows(go_df, kegg_df) %>%
+  arrange(p.adjust)
+
+
+# List of top 5 enriched pathways
+top_5_pathways <- head(all_enriched_pathways, 5)
+
+print("Top 5 Enriched Pathways:")
+print(top_5_pathways)
+
+if (!is.null(kegg_results) && nrow(kegg_results@result) > 0) {
+  print("Generating KEGG Dot Plot...")
+  dotplot(kegg_results, 
+          showCategory=5, 
+          title="KEGG Pathway Enrichment (Top 5)")
+} else {
+  print("Skipping KEGG Dot Plot: No significant KEGG terms found.")
+}
+
+# ---------------------------------------------------------------
+# 11. Optional Visualization
+# ---------------------------------------------------------------
+
+# Heatmap (using VSD normalized counts)
+top_50_genes <- top_100_de_genes$GeneID[1:50]
+ordered_cols <- rownames(metadata)
+vsd <- vst(dds, blind=FALSE)
+vsd_mat <- assay(vsd)[top_50_genes, ordered_cols]
+sample_group <- data.frame(Treatment = metadata$condition)
+rownames(sample_group) <- ordered_cols
+
+pheatmap(vsd_mat, scale = "row", cluster_cols = FALSE, show_rownames = FALSE, 
+         annotation_col = sample_group, main = "Heatmap of Top 50 DE Genes")
+
 ```
 ### Result
 
