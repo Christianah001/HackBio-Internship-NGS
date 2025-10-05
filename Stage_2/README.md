@@ -440,3 +440,9 @@ ego <- enrichGO(gene          = gene_list,
                 pAdjustMethod = "BH",
                 qvalueCutoff  = 0.05)
 ```
+### Result
+
+![Volcano Plot](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/Volcano%20res_df.png)
+
+
+```
