@@ -531,9 +531,32 @@ pheatmap(vsd_mat, scale = "row", cluster_cols = FALSE, show_rownames = FALSE,
 
 ```
 ### Result
-
+```
+```
+Volcano Plot
 ![Volcano Plot](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/Volcano%20res_df.png)
 ```
 ```
+The plot shows a clear and significant shift in gene expression. The vast majority of genes significantly affected (those scattered above the red dashed line, which represents your padj<0.05 threshold) show either strong up-regulation (red dots to the right of the log 2 FC>1 threshold) or strong down-regulation (blue dots to the left of the log 
+2 FC<−1 threshold).
+
+The UV-C treatment caused a large-scale, highly significant transcriptional reprogramming in the vascular tissue. The most significant changes are clustered well away from the center, confirming a genuine biological effect.
+```
+```
+Heatmap of Top 100 Differentially Expressed Genes
 ![Heatmap of Differentially expressed genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/DE%20Genes.png)
 ```
+The Heatmap provides irrefutable visual validation of the experiment's success.
+The clustering tree at the top of the plot clearly separates the samples into two distinct branches: Control (cyan bar) and UV-C Treated (pink/red bar). This shows the biological variation between the two conditions is much greater than the variation within the three biological replicates.
+
+Gene Expression Patterns:
+
+The left block (Control samples) shows high expression (red/orange) for one group of genes and low expression (blue) for another.
+
+The right block (Treated samples) shows the inverse pattern: the genes highly expressed in control are now low, and the genes low in control are now highly induced (red/orange).
+
+Key Takeaway: The clear separation validates the entire experiment. The UV-C treatment effectively and consistently switched the transcriptional state of the vascular cells.
+
+It displays the expression values of the most significant genes, where red signifies high expression and blue signifies low expression. The dendrogram (tree) structure at the top shows a perfect, clear segregation of all samples into two major clusters: Control and Treated. This confirms that the UV-C exposure caused a massive and consistent transcriptional shift. Furthermore, the genes cluster into two primary groups: a large set of genes that are highly downregulated (switched off) in the UV-C samples (likely growth/metabolism genes), and a smaller, highly upregulated set that represents the core defense and repair machinery activated by the stress.
+```
+![GO](
