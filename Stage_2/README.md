@@ -598,3 +598,22 @@ Defense Repurposing (Pathogen Interaction): The plant quickly turns on generic s
 
 In short, the vasculature acts as the plant's command center, initiating signaling, detoxification, and a strong general defense.
 
+### Summary of Findings
+
+The analysis reveals an **immediate and robust defense strategy** in the *Arabidopsis* vasculature. Visualizations confirm a **large-scale transcriptional shift** and **perfect sample segregation** (Treated vs. Control). Functional enrichment highlights a prioritized response focused on:
+
+1.  **Systemic Signaling:** Highly significant enrichment of the **MAPK Signaling pathway** to coordinate the whole-plant defense.
+2.  **Detoxification & Protection:** Upregulation of **Glutathione metabolism** and pathways like **Phenylpropanoid biosynthesis** to neutralize toxicity and create chemical UV-screens.
+This response confirms the vasculature's critical role as both a stress **sensor and organizer**.
+
+## 💬 Discussion
+
+The differential gene expression analysis provides compelling molecular evidence for the **active role of the *Arabidopsis* vasculature** in orchestrating the plant's immediate response to UV-C stress. The clear segregation of samples in the Heatmap confirms that this tissue undergoes a rapid, consistent, and massive transcriptional reprogramming upon exposure.
+
+The **functional enrichment data is the core finding,** revealing a dual defense strategy:
+
+1.  **Crisis Management and Communication:** The significant upregulation of genes in the **MAPK Signaling** and **Oxidative Stress/Hypoxia** pathways confirms the tissue immediately enters a crisis state. The vasculature acts as a **systemic sentinel**, rapidly perceiving the stress signal and activating core signaling cascades necessary for communicating the threat across the leaf.
+2.  **Resource Reallocation for Protection:** The activation of biosynthetic pathways like **Glutathione Metabolism** and **Phenylpropanoid Biosynthesis** demonstrates a metabolic shift away from growth (supported by the high number of downregulated genes) towards defense. This strategic reallocation ensures the immediate production of mobile antioxidants and UV-protective secondary metabolites (like flavonoids), shielding the entire organism from subsequent damage.
+
+In conclusion, this transcriptomic profile confirms that the vascular tissue is not a passive conduit but rather a **critical regulatory hub** that defines the speed and nature of the plant's defense response, offering valuable molecular targets for engineering enhanced stress resilience in crops.
+
