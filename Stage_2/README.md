@@ -552,11 +552,11 @@ The clustering tree at the top of the plot clearly separates the samples into tw
 Gene Expression Patterns:
 
 The left block (Control samples) shows high expression (red/orange) for one group of genes and low expression (blue) for another.
-
 The right block (Treated samples) shows the inverse pattern: the genes highly expressed in control are now low, and the genes low in control are now highly induced (red/orange).
 
 Key Takeaway: The clear separation validates the entire experiment. The UV-C treatment effectively and consistently switched the transcriptional state of the vascular cells.
-
 It displays the expression values of the most significant genes, where red signifies high expression and blue signifies low expression. The dendrogram (tree) structure at the top shows a perfect, clear segregation of all samples into two major clusters: Control and Treated. This confirms that the UV-C exposure caused a massive and consistent transcriptional shift. Furthermore, the genes cluster into two primary groups: a large set of genes that are highly downregulated (switched off) in the UV-C samples (likely growth/metabolism genes), and a smaller, highly upregulated set that represents the core defense and repair machinery activated by the stress.
 ```
-![GO](
+Functional Interpretation (GO and KEGG Enrichment)
+![GO](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/GO%20top5.png)
+![KEGG](
