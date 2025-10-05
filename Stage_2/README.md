@@ -443,6 +443,7 @@ ego <- enrichGO(gene          = gene_list,
 ### Result
 
 ![Volcano Plot](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/Volcano%20res_df.png)
-
-
+```
+```
+![Heatmap of Differentially expressed genes](https://github.com/Christianah001/HackBio-Internship-NGS/blob/main/Stage_2/Results/DE%20Genes.png)
 ```
